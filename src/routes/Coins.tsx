@@ -14,12 +14,15 @@ const Header = styled.header`
   align-items: center;
 `;
 const CoinsList = styled.ul``;
+
 const Coin = styled.li`
   background-color: #fff;
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
+    display: flex !important;
+    align-items: center !important;
     padding: 20px;
     transition: color 0.2s ease-in;
     display: block;
@@ -40,7 +43,11 @@ const Loader = styled.span`
   text-align: center;
   display: block;
 `;
-
+const Image = styled.img`
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+`;
 interface CoinInterface {
   id: string;
   name: string;
@@ -66,7 +73,7 @@ function Coins() {
   return (
     <Container>
       <Header>
-        <Title>코인</Title>;
+        <Title>코인 </Title>;
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -74,7 +81,18 @@ function Coins() {
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+              <Link
+                to={{
+                  pathname: `/${coin.id}`,
+                  state: { name: coin.name },
+                }}
+              >
+                <Image
+                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                  alt="coin"
+                />
+                {coin.name} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinsList>
