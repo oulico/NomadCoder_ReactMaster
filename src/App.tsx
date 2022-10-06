@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-
+import { ReactQueryDevtools } from "react-query/devtools";
 import React from "react";
 
 import Router from "./Router";
@@ -72,6 +72,7 @@ function App() {
     <>
       <GlobalStyle />
       <Router />
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }

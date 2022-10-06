@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -48,7 +50,7 @@ const Image = styled.img`
   height: 25px;
   margin-right: 10px;
 `;
-interface CoinInterface {
+interface ICoin {
   id: string;
   name: string;
   symbol: string;
@@ -59,27 +61,32 @@ interface CoinInterface {
 }
 
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
+  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+
+  //   const [coins, setCoins] = useState<CoinInterface[]>([]);
+  //   const [loading, setLoading] = useState(true);
+  //   useEffect(() => {
+  //     (async () => {
+  //       const response = await fetch("https://api.coinpaprika.com/v1/coins");
+  //       const json = await response.json();
+  //       setCoins(json.slice(0, 100));
+  //       setLoading(false);
+  //     })();
+
+  // }, []);
+  //리액트 쿼리로 상단의 코드를 대신할 수 있다. 리액트 쿼리는 캐싱, 상태관리, isLoading 등 다양한 기능을 가지고 있다. 리액트 쿼리는 fetch 펑션만 가지고도 많은 정보를 건네준다. 기본적으로 유즈쿼리를 사용하면, isLoading 과 data를 준다. 캐싱을 해주기 때문에 API에 접근하지 않아서 신속한 화면 전환이 가능하다.
 
   return (
     <Container>
       <Header>
         <Title>코인 </Title>;
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
+            // 인터페이스 코인을 useQuery뒤에 달아주자. 그러면 data가 무슨 타입인지 묻는 타입스크립트 에러가 사라진다. 이후에는 data가 배열이거나 undefined일 수 있다는 에러가 뜰 것이다. 그러면 data 뒤에 ?를 붙여서 optional하게 만들어주자.
             <Coin key={coin.id}>
               <Link
                 to={{
