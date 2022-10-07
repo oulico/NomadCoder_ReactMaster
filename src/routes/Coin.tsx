@@ -8,8 +8,10 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { isDarkAtom } from "../atoms";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -44,7 +46,7 @@ const Btn = styled.button`
   background: none;
   color: ${(props) => props.theme.accentColor};
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 const Title = styled.h1`
   font-size: 48px;
@@ -57,7 +59,7 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -88,7 +90,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -161,8 +163,10 @@ interface PriceData {
     };
   };
 }
-
-const Coin = () => {
+interface ICoinProps {}
+function Coin({}: ICoinProps) {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setterFn = useSetRecoilState(isDarkAtom);
   // const [loading, setLoading] = useState(true);
   const { coinId } = useParams<Params>();
   const { state } = useLocation<RouteState>();
@@ -208,8 +212,8 @@ const Coin = () => {
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
-        <Btn>
-          <h1>☀</h1>
+        <Btn onClick={() => setterFn((prev) => !prev)}>
+          {isDark ? <h1>☀</h1> : <h1>☾</h1>}
         </Btn>
       </Header>
       {loading ? (
@@ -263,6 +267,6 @@ const Coin = () => {
       )}
     </Container>
   );
-};
+}
 
 export default Coin;

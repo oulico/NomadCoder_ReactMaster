@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -14,12 +16,13 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: #fff;
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -50,6 +53,26 @@ const Image = styled.img`
   height: 25px;
   margin-right: 10px;
 `;
+
+const Btn = styled.button`
+  position: absolute;
+
+  right: 0;
+
+  line-height: 20px;
+  top: 50px;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: ${(props) => props.theme.accentColor};
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+
 interface ICoin {
   id: string;
   name: string;
@@ -59,8 +82,11 @@ interface ICoin {
   is_active: boolean;
   type: string;
 }
+interface ICoinsProps {}
 
-function Coins() {
+function Coins({}: ICoinsProps) {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setterFn = useSetRecoilState(isDarkAtom);
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   //   const [coins, setCoins] = useState<CoinInterface[]>([]);
@@ -80,7 +106,11 @@ function Coins() {
     <Container>
       <Header>
         <Title>COINOW</Title>
+        <Btn onClick={() => setterFn((prev) => !prev)}>
+          {isDark ? "☀" : "☾"}
+        </Btn>
       </Header>
+
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (

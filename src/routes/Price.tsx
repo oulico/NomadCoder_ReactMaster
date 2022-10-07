@@ -1,8 +1,9 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
-import React from "react";
-import { mapQueryStatusFilter } from "react-query/types/core/utils";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
+// import { darkTheme, lightTheme } from "../theme";
 
 interface ChartProps {
   coinId: string;
@@ -19,6 +20,7 @@ interface IData {
 }
 
 function Price({ coinId }: ChartProps) {
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<IData[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
   );
@@ -28,38 +30,61 @@ function Price({ coinId }: ChartProps) {
         "Loading Chart..."
       ) : (
         <ApexChart
-          type="candlestick"
+          type="line"
           series={[
             {
-              name: "candle",
-
-              data: [
-                {
-                  x: data?.map((v) => new Date(v.time_open)),
-                  y: [
-                    // data?.map((v) => v.open) as number[],
-                    // data?.map((v) => v.high) as number[],
-                    // data?.map((v) => v.low) as number[],
-                    // data?.map((v) => v.close) as number[],
-                    6608.91, 6618.99, 6608.01, 6612,
-                  ],
-                },
-              ],
+              name: "Price",
+              data: data?.map((v) => v.close) as number[],
             },
           ]}
           options={{
-            chart: {
-              height: 500,
-              width: 500,
-              type: "candlestick",
+            stroke: {
+              show: true,
+              curve: "smooth",
+              lineCap: "butt",
+              width: 2,
             },
-            title: {
-              text: "CandleStick Chart - Category X-axis",
-              align: "left",
+            yaxis: {
+              show: false,
             },
-
+            xaxis: {
+              type: "datetime",
+              categories: data?.map((price) =>
+                new Date(Number(price.time_close) * 1000).toISOString()
+              ),
+              labels: {
+                show: false,
+              },
+              axisTicks: {
+                show: false,
+              },
+              axisBorder: {
+                show: false,
+              },
+            },
+            fill: {
+              type: "gradient",
+              gradient: { gradientToColors: ["green"], stops: [0, 100] },
+            },
+            colors: ["red"],
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
+            },
+            chart: {
+              height: 300,
+              width: 500,
+              toolbar: {
+                show: false,
+              },
+              background: "transparent",
+            },
+            grid: {
+              show: false,
+            },
+            tooltip: {
+              y: {
+                formatter: (value) => `$${value.toFixed(3)}`,
+              },
             },
           }}
         />
