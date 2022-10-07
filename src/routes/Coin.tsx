@@ -23,6 +23,28 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+`;
+const Btn = styled.button`
+  position: absolute;
+  &:first-child {
+    left: 0;
+  }
+  &:last-child {
+    right: 0;
+  }
+  line-height: 20px;
+  top: 50px;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: ${(props) => props.theme.accentColor};
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 const Title = styled.h1`
   font-size: 48px;
@@ -178,10 +200,17 @@ const Coin = () => {
   return (
     <Container>
       <Header>
+        <Link to={`/`}>
+          <Btn>
+            <h1>↩</h1>
+          </Btn>
+        </Link>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
-        ;
+        <Btn>
+          <h1>☀</h1>
+        </Btn>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -222,15 +251,12 @@ const Coin = () => {
             </Tab>
           </Tabs>
 
-          <Link to={`/${coinId}/chart`}>chart</Link>
-          <Link to={`/${coinId}/price`}>price</Link>
-
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price coinId={coinId} />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
