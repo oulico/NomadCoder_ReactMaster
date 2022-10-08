@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/NomadCoder_ReactMaster/static/css/main.e6c13ad2.css",
-    "main.js": "/NomadCoder_ReactMaster/static/js/main.f856ec89.js",
+    "main.js": "/NomadCoder_ReactMaster/static/js/main.af0f8ddf.js",
     "static/js/787.6df35bd2.chunk.js": "/NomadCoder_ReactMaster/static/js/787.6df35bd2.chunk.js",
     "index.html": "/NomadCoder_ReactMaster/index.html",
     "main.e6c13ad2.css.map": "/NomadCoder_ReactMaster/static/css/main.e6c13ad2.css.map",
-    "main.f856ec89.js.map": "/NomadCoder_ReactMaster/static/js/main.f856ec89.js.map",
+    "main.af0f8ddf.js.map": "/NomadCoder_ReactMaster/static/js/main.af0f8ddf.js.map",
     "787.6df35bd2.chunk.js.map": "/NomadCoder_ReactMaster/static/js/787.6df35bd2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.f856ec89.js"
+    "static/js/main.af0f8ddf.js"
   ]
 }
