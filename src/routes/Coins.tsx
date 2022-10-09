@@ -60,10 +60,10 @@ const Btn = styled.button`
   right: 0;
 
   line-height: 20px;
-  top: 50px;
+  top: calc(10vh / 4);
   font-size: 20px;
-  width: 40px;
-  height: 40px;
+  width: calc(10vh / 2);
+  height: calc(10vh / 2);
   padding: 10px;
   border: none;
   border-radius: 50%;

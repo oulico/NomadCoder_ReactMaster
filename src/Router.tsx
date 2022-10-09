@@ -4,13 +4,13 @@ import Coins from "./routes/Coins";
 interface IRouterProps {}
 function Router({}: IRouterProps) {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Switch>
+        <Route path="/" exact>
+          <Coins />
+        </Route>
         <Route path="/:coinId">
           <Coin></Coin>
-        </Route>
-        <Route path="/">
-          <Coins />
         </Route>
       </Switch>
     </BrowserRouter>
